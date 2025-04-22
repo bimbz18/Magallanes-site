@@ -23,13 +23,33 @@
     crossorigin=""></script>
 
   <script>
+    const params = new URLSearchParams(window.location.search);
+    const dataParam = params.get('data');
+    let places = [];
+
+    try {
+      places = JSON.parse(decodeURIComponent(dataParam));
+    } catch (error) {
+      alert('Failed to load travel data.');
+    }
+
     const map = L.map('map').setView([20, 0], 2);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    const placeData = JSON.parse(localStorage.getItem("magallanesPlaces") || "[]");
-    const countrySet = new Set();
+    const countryCentroids = {
+      "Japan": [36.2048, 138.2529],
+      "United States of America": [37.0902, -95.7129],
+      "Argentina": [-38.4161, -63.6167],
+      "France": [46.6034, 1.8883],
+      "Germany": [51.1657, 10.4515],
+      "Italy": [41.8719, 12.5674],
+      "Mexico": [23.6345, -102.5528],
+      "Canada": [56.1304, -106.3468],
+      "Brazil": [-14.2350, -51.9253],
+      "Spain": [40.4637, -3.7492]
+    };
 
     const cityCoords = {
       "Tokyo": [35.6762, 139.6503],
@@ -52,40 +72,28 @@
       "Toronto": [43.651070, -79.347015]
     };
 
-    const countryCentroids = {
-      "Japan": [36.2048, 138.2529],
-      "United States of America": [37.0902, -95.7129],
-      "Argentina": [-38.4161, -63.6167],
-      "France": [46.6034, 1.8883],
-      "Germany": [51.1657, 10.4515],
-      "Italy": [41.8719, 12.5674],
-      "Mexico": [23.6345, -102.5528],
-      "Canada": [56.1304, -106.3468],
-      "Brazil": [-14.2350, -51.9253],
-      "Spain": [40.4637, -3.7492]
-    };
+    const visitedCountries = new Set();
 
-    placeData.forEach(entry => {
-      if (!countrySet.has(entry.country)) {
-        countrySet.add(entry.country);
-      }
+    places.forEach(place => {
+      visitedCountries.add(place.country);
+
       const marker = L.marker([0, 0]).addTo(map);
-      marker.bindPopup(`<b>${entry.city}</b><br>${entry.country}`);
+      marker.bindPopup(`<b>${place.city}</b><br>${place.country}`);
 
-      if (cityCoords[entry.city]) {
-        marker.setLatLng(cityCoords[entry.city]);
+      if (cityCoords[place.city]) {
+        marker.setLatLng(cityCoords[place.city]);
       }
     });
 
-    countrySet.forEach(name => {
-      if (countryCentroids[name]) {
-        const circle = L.circle(countryCentroids[name], {
+    visitedCountries.forEach(country => {
+      if (countryCentroids[country]) {
+        const circle = L.circle(countryCentroids[country], {
           color: 'red',
           fillColor: '#f03',
           fillOpacity: 0.3,
           radius: 1500000
         }).addTo(map);
-        circle.bindPopup(`<b>${name}</b>`);
+        circle.bindPopup(`<b>${country}</b>`);
       }
     });
   </script>
