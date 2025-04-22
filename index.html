@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Magallanes Travel Tracker</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; max-width: 600px; margin: auto; }
+    label, input, select, button { display: block; margin-bottom: 1rem; width: 100%; }
+    ul { list-style: disc inside; margin-top: 1rem; }
+    .card { border: 1px solid #ccc; padding: 1rem; margin-top: 2rem; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h2>🌍 Magallanes Travel Tracker</h2>
+  
+  <label for="country">Select a country:</label>
+  <input type="text" id="country" list="country-list" placeholder="Start typing a country..." oninput="updateCityList()" />
+  <datalist id="country-list">
+    <option value="Japan"><option value="United States of America"><option value="Argentina">
+    <option value="France"><option value="Germany"><option value="Italy"><option value="Mexico">
+    <option value="Canada"><option value="Brazil"><option value="Spain">
+  </datalist>
+
+  <label for="city">Enter a city:</label>
+  <input type="text" id="city" list="city-list" placeholder="Type a city..." />
+  <datalist id="city-list"></datalist>
+
+  <button onclick="addPlace()">Add to List</button>
+
+  <div class="card">
+    <h3>🗺️ Visited Places:</h3>
+    <ul id="places-list"></ul>
+  </div>
+
+  <button style="background-color:#007bff;color:white;padding:0.5rem 1rem;border:none;border-radius:5px;margin-top:1rem;"
+          onclick="goToMap()">
+    🌍 View on Map
+  </button>
+
+  <script>
+    const countryCityMap = {
+      "Japan": ["Tokyo", "Kyoto", "Osaka", "Sapporo", "Nara", "Hakone"],
+      "United States of America": ["New York", "Los Angeles", "Chicago", "Miami", "Dallas", "Atlanta"],
+      "Argentina": ["Buenos Aires", "Córdoba", "Rosario"],
+      "France": ["Paris", "Lyon", "Marseille"],
+      "Germany": ["Berlin", "Munich", "Hamburg"],
+      "Italy": ["Rome", "Milan", "Florence", "Venice"],
+      "Mexico": ["Mexico City", "Guadalajara", "Monterrey"],
+      "Canada": ["Toronto", "Vancouver", "Montreal"],
+      "Brazil": ["São Paulo", "Rio de Janeiro", "Brasília"],
+      "Spain": ["Madrid", "Barcelona", "Seville"]
+    };
+
+    const countryInput = document.getElementById("country");
+    const cityInput = document.getElementById("city");
+    const cityList = document.getElementById("city-list");
+    const placesList = document.getElementById("places-list");
+
+    let places = [];
+
+    function updateCityList() {
+      const country = countryInput.value;
+      cityList.innerHTML = "";
+      if (countryCityMap[country]) {
+        countryCityMap[country].sort().forEach(city => {
+          const opt = document.createElement("option");
+          opt.value = city;
+          cityList.appendChild(opt);
+        });
+      }
+    }
+
+    function addPlace() {
+      const country = countryInput.value.trim();
+      const city = cityInput.value.trim();
+      if (!country || !city) return;
+
+      const entry = { country, city };
+      places.push(entry);
+      renderPlaces();
+      cityInput.value = "";
+    }
+
+    function renderPlaces() {
+      placesList.innerHTML = "";
+      if (places.length === 0) {
+        placesList.innerHTML = "<li>No places added yet.</li>";
+        return;
+      }
+      places.forEach(p => {
+        const li = document.createElement("li");
+        li.textContent = `${p.city}, ${p.country}`;
+        placesList.appendChild(li);
+      });
+    }
+
+    function goToMap() {
+      const dataString = encodeURIComponent(JSON.stringify(places));
+      window.open(`mapa.html?data=${dataString}`, "_blank");
+    }
+  </script>
+</body>
+</html>
