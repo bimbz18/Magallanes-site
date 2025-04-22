@@ -80,7 +80,7 @@
       const marker = L.marker([0, 0]).addTo(map);
       marker.bindPopup(`<b>${place.city}</b><br>${place.country}`);
 
-      if (cityCoords[place.city]) {
+      (cityCoords[place.city]) {
         marker.setLatLng(cityCoords[place.city]);
       }
     });
