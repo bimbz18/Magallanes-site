@@ -5,23 +5,14 @@
   <meta charset="utf-8">
   <title>Magallanes Map</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-sA+e2at+S1G/h2G1zsrMTvxdQxzIN+ZO/o7OGX2n0kM="
-    crossorigin=""
-  />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     html, body, #map { height: 100%; margin: 0; padding: 0; }
   </style>
 </head>
 <body>
   <div id="map"></div>
-
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-o9N1j7kG2bJm2iHrDcez53fn5LfL+3zO9mDg9+jmy3E="
-    crossorigin=""></script>
-
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     const params = new URLSearchParams(window.location.search);
     const dataParam = params.get('data');
@@ -76,11 +67,9 @@
 
     places.forEach(place => {
       visitedCountries.add(place.country);
-
       const marker = L.marker([0, 0]).addTo(map);
       marker.bindPopup(`<b>${place.city}</b><br>${place.country}`);
-
-      (cityCoords[place.city]) {
+      if (cityCoords[place.city]) {
         marker.setLatLng(cityCoords[place.city]);
       }
     });
