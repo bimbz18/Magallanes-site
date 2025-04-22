@@ -66,7 +66,7 @@
     // Pintar las formas reales de los países
     L.geoJSON(geojsonData, {
       filter: function(feature) {
-        return visitedCountries.has(feature.properties.ADMIN);
+        return visitedCountries.has(feature.properties.name);
       },
       style: {
         color: 'red',
