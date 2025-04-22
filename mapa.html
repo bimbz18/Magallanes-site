@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Magallanes Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-sA+e2at+S1G/h2G1zsrMTvxdQxzIN+ZO/o7OGX2n0kM="
+    crossorigin=""
+  />
+  <style>
+    html, body, #map { height: 100%; margin: 0; padding: 0; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-o9N1j7kG2bJm2iHrDcez53fn5LfL+3zO9mDg9+jmy3E="
+    crossorigin=""></script>
+
+  <script>
+    const map = L.map('map').setView([20, 0], 2);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    const placeData = JSON.parse(localStorage.getItem("magallanesPlaces") || "[]");
+    const countrySet = new Set();
+
+    const cityCoords = {
+      "Tokyo": [35.6762, 139.6503],
+      "Kyoto": [35.0116, 135.7681],
+      "Osaka": [34.6937, 135.5023],
+      "Sapporo": [43.0621, 141.3544],
+      "Nara": [34.6851, 135.8048],
+      "Hakone": [35.2329, 139.1066],
+      "New York": [40.7128, -74.0060],
+      "Los Angeles": [34.0522, -118.2437],
+      "Chicago": [41.8781, -87.6298],
+      "Miami": [25.7617, -80.1918],
+      "Dallas": [32.7767, -96.7970],
+      "Atlanta": [33.7490, -84.3880],
+      "Buenos Aires": [-34.6037, -58.3816],
+      "Paris": [48.8566, 2.3522],
+      "Berlin": [52.5200, 13.4050],
+      "Rome": [41.9028, 12.4964],
+      "Madrid": [40.4168, -3.7038],
+      "Toronto": [43.651070, -79.347015]
+    };
+
+    const countryCentroids = {
+      "Japan": [36.2048, 138.2529],
+      "United States of America": [37.0902, -95.7129],
+      "Argentina": [-38.4161, -63.6167],
+      "France": [46.6034, 1.8883],
+      "Germany": [51.1657, 10.4515],
+      "Italy": [41.8719, 12.5674],
+      "Mexico": [23.6345, -102.5528],
+      "Canada": [56.1304, -106.3468],
+      "Brazil": [-14.2350, -51.9253],
+      "Spain": [40.4637, -3.7492]
+    };
+
+    placeData.forEach(entry => {
+      if (!countrySet.has(entry.country)) {
+        countrySet.add(entry.country);
+      }
+      const marker = L.marker([0, 0]).addTo(map);
+      marker.bindPopup(`<b>${entry.city}</b><br>${entry.country}`);
+
+      if (cityCoords[entry.city]) {
+        marker.setLatLng(cityCoords[entry.city]);
+      }
+    });
+
+    countrySet.forEach(name => {
+      if (countryCentroids[name]) {
+        const circle = L.circle(countryCentroids[name], {
+          color: 'red',
+          fillColor: '#f03',
+          fillOpacity: 0.3,
+          radius: 1500000
+        }).addTo(map);
+        circle.bindPopup(`<b>${name}</b>`);
+      }
+    });
+  </script>
+</body>
+</html>
