@@ -84,7 +84,24 @@
   </div>
 
   <script>
-    const countryCityData = {
+    countryCityData = {
+  "Argentina": ['Buenos Aires', 'Córdoba', 'Rosario', 'Mendoza'],
+  "Australia": ['Canberra', 'Sydney', 'Melbourne', 'Brisbane'],
+  "Brazil": ['Brasília', 'São Paulo', 'Rio de Janeiro', 'Salvador'],
+  "Canada": ['Ottawa', 'Toronto', 'Vancouver', 'Montreal'],
+  "China": ['Beijing', 'Shanghai', 'Guangzhou', 'Shenzhen'],
+  "France": ['Paris', 'Lyon', 'Marseille', 'Toulouse'],
+  "Germany": ['Berlin', 'Munich', 'Hamburg', 'Frankfurt'],
+  "India": ['New Delhi', 'Mumbai', 'Bangalore', 'Hyderabad'],
+  "Italy": ['Rome', 'Milan', 'Naples', 'Florence'],
+  "Japan": ['Tokyo', 'Kyoto', 'Osaka', 'Sapporo'],
+  "Mexico": ['Mexico City', 'Guadalajara', 'Monterrey', 'Mérida'],
+  "Portugal": ['Lisbon', 'Porto', 'Coimbra', 'Faro'],
+  "South Africa": ['Pretoria', 'Cape Town', 'Johannesburg', 'Durban'],
+  "Spain": ['Madrid', 'Barcelona', 'Valencia', 'Seville'],
+  "United Kingdom": ['London', 'Manchester', 'Birmingham', 'Liverpool'],
+  "United States of America": ['Washington', 'New York', 'Los Angeles', 'Chicago', 'Miami', 'Dallas', 'San Francisco', 'Atlanta']
+};
       "Japan": ["Tokyo", "Kyoto", "Osaka", "Sapporo", "Nara", "Hakone"],
       "United States of America": ["New York", "Los Angeles", "Chicago", "Miami", "Dallas", "Atlanta", "Washington", "San Francisco", "Indio"],
       "Mexico": ["Mexico City", "Guadalajara", "Monterrey", "Mérida"],
@@ -137,7 +154,7 @@
 
     function goToMap() {
       const dataString = encodeURIComponent(JSON.stringify(places));
-      window.open("mapa.html?data=" + dataString, "_blank");
+      window.open("mapa_magallanes_final.html?data=" + dataString, "_blank");
     }
   </script>
 </body>
