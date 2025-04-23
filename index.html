@@ -142,8 +142,8 @@ const countryCityData = {
       places.forEach((p, idx) => {
         const li = document.createElement("li");
         li.className = "entry";
-        li.innerHTML = `<span>{p.city}, {p.country}</span>
-                        <button onclick="removePlace({idx})">×</button>`;
+        li.innerHTML = `<span>${p.city}, ${p.country}</span>
+                        <button onclick="removePlace(${idx})">×</button>`;
         placeList.appendChild(li);
       });
     }
