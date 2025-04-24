@@ -7,19 +7,23 @@
   <style>
     body {
       font-family: sans-serif;
-      background-color: #f9f9f9;
+      background-color: #f4f4f4;
       margin: 0;
       padding: 0;
     }
     .container {
-      max-width: 600px;
+      max-width: 640px;
       margin: 3rem auto;
       background: white;
       padding: 2rem;
       border-radius: 12px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+      box-shadow: 0 0 10px rgba(0,0,0,0.08);
     }
-    label { font-weight: bold; display: block; margin-top: 1rem; }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 1rem;
+    }
     input, datalist, button {
       width: 100%;
       padding: 0.5rem;
@@ -28,7 +32,8 @@
     .entry {
       display: flex;
       justify-content: space-between;
-      background: #f0f0f0;
+      align-items: center;
+      background: #eef;
       margin-top: 0.5rem;
       padding: 0.4rem 0.6rem;
       border-radius: 6px;
@@ -59,11 +64,11 @@
     <h2>🌍 Magallanes Travel Tracker</h2>
 
     <label for="country">Select a country:</label>
-    <input list="country-list" id="country" placeholder="Type or choose a country" oninput="updateCities()" />
+    <input list="country-list" id="country" placeholder="Start typing a country" oninput="updateCities()" />
     <datalist id="country-list"></datalist>
 
     <label for="city">Select a city:</label>
-    <input list="city-list" id="city" placeholder="Type or choose a city" />
+    <input list="city-list" id="city" placeholder="Start typing a city" />
     <datalist id="city-list"></datalist>
 
     <button onclick="addPlace()">Add</button>
@@ -74,29 +79,27 @@
   </div>
 
   <script>
-    
-const countryCityData = {
-  "Argentina": ["Buenos Aires", "Córdoba", "Rosario", "Mendoza"],
-  "Australia": ["Canberra", "Sydney", "Melbourne", "Brisbane"],
-  "Brazil": ["Brasília", "São Paulo", "Rio de Janeiro", "Salvador"],
-  "Canada": ["Ottawa", "Toronto", "Vancouver", "Montreal"],
-  "China": ["Beijing", "Shanghai", "Guangzhou", "Shenzhen"],
-  "France": ["Paris", "Lyon", "Marseille", "Toulouse"],
-  "Germany": ["Berlin", "Munich", "Hamburg", "Frankfurt"],
-  "India": ["New Delhi", "Mumbai", "Bangalore", "Hyderabad"],
-  "Italy": ["Rome", "Milan", "Naples", "Florence"],
-  "Japan": ["Tokyo", "Kyoto", "Osaka", "Sapporo"],
-  "Mexico": ["Mexico City", "Guadalajara", "Monterrey", "Mérida"],
-  "Portugal": ["Lisbon", "Porto", "Coimbra", "Faro"],
-  "South Africa": ["Pretoria", "Cape Town", "Johannesburg", "Durban"],
-  "Spain": ["Madrid", "Barcelona", "Valencia", "Seville"],
-  "United Kingdom": ["London", "Manchester", "Birmingham", "Liverpool"],
-  "United States of America": [
-    "Washington", "New York", "Los Angeles", "Chicago",
-    "Miami", "Dallas", "San Francisco", "Atlanta"
-  ]
-};
-
+    const countryCityData = {
+      "Argentina": ["Buenos Aires", "Córdoba", "Rosario", "Mendoza"],
+      "Australia": ["Canberra", "Sydney", "Melbourne", "Brisbane"],
+      "Brazil": ["Brasília", "São Paulo", "Rio de Janeiro", "Salvador"],
+      "Canada": ["Ottawa", "Toronto", "Vancouver", "Montreal"],
+      "China": ["Beijing", "Shanghai", "Guangzhou", "Shenzhen"],
+      "France": ["Paris", "Lyon", "Marseille", "Toulouse"],
+      "Germany": ["Berlin", "Munich", "Hamburg", "Frankfurt"],
+      "India": ["New Delhi", "Mumbai", "Bangalore", "Hyderabad"],
+      "Italy": ["Rome", "Milan", "Naples", "Florence"],
+      "Japan": ["Tokyo", "Kyoto", "Osaka", "Sapporo"],
+      "Mexico": ["Mexico City", "Guadalajara", "Monterrey", "Mérida"],
+      "Portugal": ["Lisbon", "Porto", "Coimbra", "Faro"],
+      "South Africa": ["Pretoria", "Cape Town", "Johannesburg", "Durban"],
+      "Spain": ["Madrid", "Barcelona", "Valencia", "Seville"],
+      "United Kingdom": ["London", "Manchester", "Birmingham", "Liverpool"],
+      "United States of America": [
+        "Washington", "New York", "Los Angeles", "Chicago",
+        "Miami", "Dallas", "San Francisco", "Atlanta"
+      ]
+    };
 
     const countryInput = document.getElementById("country");
     const cityInput = document.getElementById("city");
@@ -106,10 +109,9 @@ const countryCityData = {
 
     let places = [];
 
-    // Cargar lista de países
-    Object.keys(countryCityData).sort().forEach(country => {
+    Object.keys(countryCityData).sort().forEach(c => {
       const opt = document.createElement("option");
-      opt.value = country;
+      opt.value = c;
       countryList.appendChild(opt);
     });
 
@@ -129,8 +131,7 @@ const countryCityData = {
       const country = countryInput.value.trim();
       const city = cityInput.value.trim();
       if (!country || !city) return;
-      const entry = { country, city };
-      places.push(entry);
+      places.push({ country, city });
       renderPlaces();
       countryInput.value = "";
       cityInput.value = "";
@@ -139,23 +140,23 @@ const countryCityData = {
 
     function renderPlaces() {
       placeList.innerHTML = "";
-      places.forEach((p, idx) => {
+      places.forEach((p, i) => {
         const li = document.createElement("li");
         li.className = "entry";
         li.innerHTML = `<span>${p.city}, ${p.country}</span>
-                        <button onclick="removePlace(${idx})">×</button>`;
+                        <button onclick="removePlace(${i})">×</button>`;
         placeList.appendChild(li);
       });
     }
 
-    function removePlace(i) {
-      places.splice(i, 1);
+    function removePlace(index) {
+      places.splice(index, 1);
       renderPlaces();
     }
 
     function viewMap() {
-      const encoded = encodeURIComponent(JSON.stringify(places));
-      window.open("mapa.html?data=" + encoded, "_blank");
+      const query = encodeURIComponent(JSON.stringify(places));
+      window.open("mapa.html?data=" + query, "_blank");
     }
   </script>
 </body>
